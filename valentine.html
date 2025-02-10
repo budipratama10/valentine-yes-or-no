@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Proposal</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 50px;
+            background-color: #ffe6e6;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: auto;
+            position: relative;
+        }
+        #yes-btn, #no-btn {
+            font-size: 18px;
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        #yes-btn {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        #no-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        #yes-btn:hover {
+            background-color: #218838;
+        }
+        #no-btn:hover {
+            background-color: #c82333;
+        }
+        #bear-img {
+            width: 150px;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+        #bear-img:hover {
+            transform: scale(1.1);
+        }
+        #final-message {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4081;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .fireworks {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: gold;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="bear-img" src="bear_normal.png" alt="Cute Bear">
+        <h2 id="question">Will you be my Valentine?</h2>
+        <div>
+            <button id="yes-btn" onclick="acceptLove()">Yes</button>
+            <button id="no-btn" onclick="changeNoText()">No</button>
+        </div>
+        <div id="final-message">💖 Ok yay!!! 💖</div>
+    </div>
+
+    <script>
+        let noMessages = ["Are you sure?", "Really sure?", "Think again!", "Last chance!", "Surely not?", "You might regret this!", "Give it another thought!", "Are you absolutely certain?", "You might be making a mistake!", "This could be your last chance!", "Don't break my heart!", "Think of the memories we could make!", "I'm getting sad now...", "Please reconsider! 💔"];
+        let index = 0;
+        let yesBtn = document.getElementById("yes-btn");
+        let noBtn = document.getElementById("no-btn");
+        let bearImg = document.getElementById("bear-img");
+        let finalMessage = document.getElementById("final-message");
+        let question = document.getElementById("question");
+
+        function changeNoText() {
+            if (index < noMessages.length) {
+                noBtn.innerText = noMessages[index];
+                yesBtn.style.fontSize = (parseFloat(window.getComputedStyle(yesBtn).fontSize) + 5) + "px";
+                let noBtnSize = parseFloat(window.getComputedStyle(noBtn).fontSize) - 1;
+                noBtn.style.fontSize = noBtnSize + "px";
+                noBtn.style.padding = Math.max(5, noBtnSize / 2) + "px " + Math.max(10, noBtnSize) + "px";
+                index++;
+            } else {
+                noBtn.style.display = "none";
+            }
+        }
+
+        function acceptLove() {
+            yesBtn.style.display = "none";
+            noBtn.style.display = "none";
+            question.style.display = "none";
+            bearImg.src = "bear_hug.png"; // Ganti dengan gambar beruang memeluk
+            finalMessage.style.display = "block";
+            triggerFireworks();
+        }
+
+        function triggerFireworks() {
+            for (let i = 0; i < 10; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("fireworks");
+                firework.style.left = `${Math.random() * 100}%`;
+                firework.style.top = `${Math.random() * 100}px`;
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
