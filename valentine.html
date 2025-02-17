@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine Proposal</title>
+    <title>My Partner Valentine</title>
     <style>
         body {
             text-align: center;
@@ -23,7 +23,7 @@
             margin: auto;
             position: relative;
         }
-        #yes-btn, #no-btn {
+        #yes-btn, #no-btn, #wa-btn {
             font-size: 18px;
             padding: 12px 25px;
             margin: 10px;
@@ -32,36 +32,21 @@
             border-radius: 5px;
             transition: all 0.3s ease;
         }
-        #yes-btn {
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-        }
-        #no-btn {
-            background-color: #dc3545;
-            color: white;
-        }
-        #yes-btn:hover {
-            background-color: #218838;
-        }
-        #no-btn:hover {
-            background-color: #c82333;
-        }
-        #bear-img {
-            width: 150px;
-            height: auto;
-            transition: transform 0.3s ease-in-out;
-        }
-        #bear-img:hover {
-            transform: scale(1.1);
-        }
+        #yes-btn { background-color: #28a745; color: white; font-weight: bold; }
+        #no-btn { background-color: #dc3545; color: white; }
+        #wa-btn { background-color: #25D366; color: white; display: none; opacity: 0; transition: opacity 1s ease-in-out; margin-top: 20px; }
+        #yes-btn:hover { background-color: #218838; }
+        #no-btn:hover { background-color: #c82333; }
+        #wa-btn:hover { background-color: #218838; }
+        #bear-img { width: 150px; height: auto; transition: transform 0.3s ease-in-out; }
+        #bear-img:hover { transform: scale(1.1); }
         #final-message {
             display: none;
             font-size: 24px;
             font-weight: bold;
             color: #ff4081;
             margin-top: 20px;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeInScale 1s ease-in-out;
         }
         .fireworks {
             position: absolute;
@@ -71,9 +56,9 @@
             border-radius: 50%;
             animation: explode 1s ease-out forwards;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
         }
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
@@ -82,30 +67,46 @@
     </style>
 </head>
 <body>
+    <!-- Backsound Musik -->
+    <audio id="bgm" loop>
+        <source src="https://yourdomain.com/backsound.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="container">
-        <img id="bear-img" src="bear_normal.png" alt="Cute Bear">
-        <h2 id="question">Will you be my Valentine?</h2>
+        <img id="bear-img" src="https://media.tenor.com/ZhNxfL0GmoMAAAAi/mocha-bear-hearts.gif" alt="Cute Bear">
+        <h2 id="question">Gelem dadi Valentineku?</h2>
         <div>
-            <button id="yes-btn" onclick="acceptLove()">Yes</button>
-            <button id="no-btn" onclick="changeNoText()">No</button>
+            <button id="yes-btn" onclick="startMusic(); acceptLove()">Yes</button>
+            <button id="no-btn" onclick="startMusic(); changeNoText()">No</button>
         </div>
         <div id="final-message">💖 Ok yay!!! 💖</div>
+        <button id="wa-btn" onclick="sendWhatsApp()">Kirim WhatsApp</button>
     </div>
 
     <script>
-        let noMessages = ["Are you sure?", "Really sure?", "Think again!", "Last chance!", "Surely not?", "You might regret this!", "Give it another thought!", "Are you absolutely certain?", "You might be making a mistake!", "This could be your last chance!", "Don't break my heart!", "Think of the memories we could make!", "I'm getting sad now...", "Please reconsider! 💔"];
+        let noMessages = [
+            "Yakin toh?", "Mikir maneh rek!", "Kesempatan terakhir iki!", "Mosok ora gelem?", "Pancen yakin rek?", "Iki kowe nggawe kesalahan!", 
+            "Opo ora eman kesempatan iki?", "Bayangno masa depan kita rek!", 
+            "Aku wiwit sedih iki...", "Yo mbok pikir maneh rek! 💔"
+        ];
         let index = 0;
         let yesBtn = document.getElementById("yes-btn");
         let noBtn = document.getElementById("no-btn");
         let bearImg = document.getElementById("bear-img");
         let finalMessage = document.getElementById("final-message");
         let question = document.getElementById("question");
+        let waBtn = document.getElementById("wa-btn");
+        let bgm = document.getElementById("bgm");
+
+        function startMusic() {
+            bgm.play();
+        }
 
         function changeNoText() {
             if (index < noMessages.length) {
                 noBtn.innerText = noMessages[index];
                 yesBtn.style.fontSize = (parseFloat(window.getComputedStyle(yesBtn).fontSize) + 5) + "px";
-                let noBtnSize = parseFloat(window.getComputedStyle(noBtn).fontSize) - 1;
+                let noBtnSize = parseFloat(window.getComputedStyle(noBtn).fontSize) - 2;
                 noBtn.style.fontSize = noBtnSize + "px";
                 noBtn.style.padding = Math.max(5, noBtnSize / 2) + "px " + Math.max(10, noBtnSize) + "px";
                 index++;
@@ -118,20 +119,40 @@
             yesBtn.style.display = "none";
             noBtn.style.display = "none";
             question.style.display = "none";
-            bearImg.src = "bear_hug.png"; // Ganti dengan gambar beruang memeluk
+            bearImg.src = "https://media.tenor.com/FSI2WWHS8oMAAAAj/tkthao219-bubududu.gif";
+            finalMessage.innerText = "Eh Salah Hahaha";
             finalMessage.style.display = "block";
-            triggerFireworks();
+            setTimeout(() => {
+                bearImg.src = "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif";
+                finalMessage.innerText = "💖 Yeaaay!!! 💖";
+                triggerFireworks(); // Panggil fungsi efek kembang api
+                console.log("Menampilkan tombol WhatsApp...");
+                waBtn.style.display = "block";
+                waBtn.style.opacity = "1";
+            }, 1500);
         }
 
         function triggerFireworks() {
-            for (let i = 0; i < 10; i++) {
-                let firework = document.createElement("div");
-                firework.classList.add("fireworks");
+            const container = document.querySelector('.container');
+            const fireworksCount = 30; // Jumlah kembang api
+
+            for (let i = 0; i < fireworksCount; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('fireworks');
                 firework.style.left = `${Math.random() * 100}%`;
-                firework.style.top = `${Math.random() * 100}px`;
-                document.body.appendChild(firework);
-                setTimeout(() => firework.remove(), 1000);
+                firework.style.top = `${Math.random() * 100}%`;
+                firework.style.animationDelay = `${Math.random()}s`;
+                container.appendChild(firework);
+
+                // Hapus elemen kembang api setelah animasi selesai
+                firework.addEventListener('animationend', () => {
+                    firework.remove();
+                });
             }
+        }
+
+        function sendWhatsApp() {
+            window.location.href = "https://wa.me/+62xxxx?text=Hayu%20Gass!!";
         }
     </script>
 </body>
